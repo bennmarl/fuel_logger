@@ -8,8 +8,10 @@ class Organization (models.Model):
         return '%s' % self.name
 
 
+
 class User (models.Model):
     email = models.EmailField(max_length = 100)
+    #encrypt password!
     password = models.CharField(max_length = 50)
     organization = models.ForeignKey(Organization, null = True, on_delete=models.SET_NULL)
     admin = models.BooleanField(default = 'false')

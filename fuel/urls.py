@@ -17,6 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from fuelsite import views as fuel_views
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
+from fuelsite.forms import CampaignForm, DatafileForm, HouseholdForm, OrganizationForm
+
+
 
 urlpatterns = [
     path('', fuel_views.home, name='home'),
@@ -25,4 +30,10 @@ urlpatterns = [
     path('about/', fuel_views.about, name='about'),
     path('org_data/', fuel_views.org_data, name='org_data'),
     path('public/', fuel_views.public, name='public'),
+    path('create_account/', fuel_views.create_account, name='create_account'),
+    path('logout_view/', fuel_views.logout_view, name='logout_view'),
+    path('login_view/', fuel_views.login_view, name='login_view'),
 ]
+
+def add_form(request):
+    return{'createAccount': UserCreationForm(request.POST or None), 'login': AuthenticationForm(request.POST or None)}
