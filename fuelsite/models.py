@@ -1,12 +1,22 @@
 from django.db import models
 from django.forms import ModelForm
+from organizations.models import Organization, OrganizationUser
+
+#organzation
+class Organization(Organization):
+    class Meta:
+        proxy = True
+
+class AccountUser(OrganizationUser):
+    class Meta:
+        proxy = True
 
 
-class Organization (models.Model):
-    name = models.CharField(max_length = 100)
-    def __str__(self):
-        return '%s' % self.name
-
+# this is unnecessary
+#class Organization (models.Model):
+#    name = models.CharField(max_length = 100)
+#    def __str__(self):
+#        return '%s' % self.name
 
 
 class User (models.Model):
@@ -15,6 +25,8 @@ class User (models.Model):
     password = models.CharField(max_length = 50)
     organization = models.ForeignKey(Organization, null = True, on_delete=models.SET_NULL)
     admin = models.BooleanField(default = 'false')
+    organization = models.ForeignKey(Organization, null = True, on_delete=models.SET_NULL)
+
 
 class Campaign (models.Model):
     SEASONAL = "S"

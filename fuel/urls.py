@@ -17,13 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from fuelsite import views as fuel_views
+from organizations.backends import invitation_backend
+from django.conf.urls import url
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
-from fuelsite.forms import CampaignForm, DatafileForm, HouseholdForm, OrganizationForm
+
+from fuelsite.forms import CampaignForm, DatafileForm, HouseholdForm, OrganizationForm, AccountUserForm, RegistrationForm, OrganizationAddForm
 
 
 
 urlpatterns = [
+    url(r'^accounts/', include('organizations.urls')),
+    url(r'^invitations/', include(invitation_backend().get_urls())),
     path('', fuel_views.home, name='home'),
     path('admin/', admin.site.urls),
     path('test/', fuel_views.test_vue, name='test'),
@@ -35,5 +40,14 @@ urlpatterns = [
     path('login_view/', fuel_views.login_view, name='login_view'),
 ]
 
-def add_form(request):
-    return{'createAccount': UserCreationForm(request.POST or None), 'login': AuthenticationForm(request.POST or None)}
+#def add_forms(request):
+#    return{'createAccount': UserCreationForm(request.POST or None), 
+#           'login': AuthenticationForm(request.POST or None),
+#           'accountUserForm': AccountUserForm(request.POST or None),
+#           'registrationForm': RegistrationForm(request.POST or None)}
+
+def add_forms(request):
+    return{'createAccount': OrganizationAddForm(request.POST or None), 
+           'login': AuthenticationForm(request.POST or None),
+           'accountUserForm': AccountUserForm(request.POST or None),
+           'registrationForm': RegistrationForm(request.POST or None)}
